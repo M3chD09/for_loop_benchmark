@@ -4,6 +4,7 @@ project(for_loop_benchmark VERSION 0.1)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+SET(CTEST_OUTPUT_ON_FAILURE ON)
 set(OpenMP_CXX_FLAGS "-openmp:llvm")
 
 find_package(TBB CONFIG REQUIRED)
@@ -13,3 +14,11 @@ add_executable(${PROJECT_NAME} main.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE TBB::tbb)
 target_link_libraries(${PROJECT_NAME} PRIVATE OpenMP::OpenMP_CXX)
+
+enable_testing()
+
+foreach(i 1 2 3)
+    foreach(test seq par omp tbb)
+        add_test(NAME ${PROJECT_NAME}_${test}_${i} COMMAND ${PROJECT_NAME} ${test})
+    endforeach()
+endforeach()
