@@ -10,7 +10,8 @@
 
 const size_t N = 2 << 28;
 
-std::function<double(void)> stl_for(auto policy)
+template<class ExecutionPolicy>
+std::function<double(void)> stl_for(ExecutionPolicy&& policy)
 {
     return [&]() -> double {
         auto values = std::vector<double>(N);
@@ -54,7 +55,8 @@ double omp_for()
     }
 
     double total = 0;
-#pragma omp parallel for reduction(+:total)
+#pragma omp parallel for reduction(+ \
+                                   : total)
     for (long long i = 0; i < (long long)values.size(); ++i) {
         total += values[i];
     }
