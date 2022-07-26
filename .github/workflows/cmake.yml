@@ -18,6 +18,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Check hardware
+      run: |
+        lscpu
+        free -h
+
     - name: Vcpkg install
       run: vcpkg install tbb:x64-linux
     
@@ -43,6 +48,11 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Check hardware
+      run: |
+        wmic cpu list /format:list
+        wmic memorychip list /format:list
+
     - name: Vcpkg install
       run: vcpkg install tbb:x64-windows
     
